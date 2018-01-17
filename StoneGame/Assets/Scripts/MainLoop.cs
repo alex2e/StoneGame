@@ -69,10 +69,10 @@ public class MainLoop : MonoBehaviour {
             //Aplicamos la fuerza de impulso
             rigibody.AddForce(Vector3.up * UnityEngine.Random.Range(minAntiGravity, maxAntiGravity), ForceMode.Impulse);
             rigibody.AddForce(Vector3.right * UnityEngine.Random.Range(minLateralForce, maxLateralForce), ForceMode.Impulse);
-        }
 
-        //Paamos la corrutina y le decimos a Unity cada cuanto tiempo la debe volver a llamar.
-        yield return new WaitForSeconds(UnityEngine.Random.Range(minTimeBetweenStones, maxTimeBetweenStones));
+            //Paamos la corrutina y le decimos a Unity cada cuanto tiempo la debe volver a llamar.
+            yield return new WaitForSeconds(UnityEngine.Random.Range(minTimeBetweenStones, maxTimeBetweenStones));
+        } 
     }
 
     // Update is called once per frame
