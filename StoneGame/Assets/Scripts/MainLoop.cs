@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,17 +34,49 @@ public class MainLoop : MonoBehaviour {
     /// </summary>
     public float minX = -30f, maxX = 30f, minZ = -30f, maxZ = 30f;
 
-
-
+    private bool enableStones = true;
+    private Rigidbody rigibody;
 
 
     // Use this for initialization
     void Start () {
-		
+        StartCoroutine(ThrowStones()); //La corrutina se va a ejecutar despues de todos los updates.
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+
+    private IEnumerator ThrowStones()
+    {
+        // Paramos la corrutina antes de hacer nada y esperamos dos segundos para continuarla.
+        yield return new WaitForSeconds(2.0f);
+
+        while (enableStones)
+        {
+            //Decidimos que tipo piedra vamos a lanzar
+            GameObject stone = Instantiate(stones[UnityEngine.Random.Range(0, stones.Length)]);
+
+            //Le damos una posicion y un giro inicial
+            stone.transform.position = new Vector3(UnityEngine.Random.Range(minX, maxX), -30.0f, UnityEngine.Random.Range(minZ, maxZ));
+            stone.transform.rotation = UnityEngine.Random.rotation;
+
+            //Seleccionamos el rigibody del GameObject
+            rigibody = stone.GetComponent<Rigidbody>();
+
+            //Aplicamos la fuerza de giro
+            rigibody.AddTorque(Vector3.up * torque, ForceMode.Impulse);
+            rigibody.AddTorque(Vector3.right * torque, ForceMode.Impulse);
+            rigibody.AddTorque(Vector3.forward * torque, ForceMode.Impulse);
+
+            //Aplicamos la fuerza de impulso
+            rigibody.AddForce(Vector3.up * UnityEngine.Random.Range(minAntiGravity, maxAntiGravity), ForceMode.Impulse);
+            rigibody.AddForce(Vector3.right * UnityEngine.Random.Range(minLateralForce, maxLateralForce), ForceMode.Impulse);
+        }
+
+        //Paamos la corrutina y le decimos a Unity cada cuanto tiempo la debe volver a llamar.
+        yield return new WaitForSeconds(UnityEngine.Random.Range(minTimeBetweenStones, maxTimeBetweenStones));
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }
