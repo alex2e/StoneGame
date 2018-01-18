@@ -22,7 +22,7 @@ public class MainLoop : MonoBehaviour {
     /// <summary>
     /// Fuerza lateral con la que se se van a crear las piedras
     /// </summary>
-    public float minLateralForce = -15.0f, maxLateralForce = -15.0f;
+    public float minLateralForce = -15.0f, maxLateralForce = 15.0f;
 
     /// <summary>
     /// Tiempo que vamos a tener que esperar entre el lanzamiento de un meteorito y el siguiente.
@@ -47,7 +47,7 @@ public class MainLoop : MonoBehaviour {
     private IEnumerator ThrowStones()
     {
         // Paramos la corrutina antes de hacer nada y esperamos dos segundos para continuarla.
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3.0f);
 
         while (enableStones)
         {
@@ -69,6 +69,9 @@ public class MainLoop : MonoBehaviour {
             //Aplicamos la fuerza de impulso
             rigibody.AddForce(Vector3.up * UnityEngine.Random.Range(minAntiGravity, maxAntiGravity), ForceMode.Impulse);
             rigibody.AddForce(Vector3.right * UnityEngine.Random.Range(minLateralForce, maxLateralForce), ForceMode.Impulse);
+
+            //Incrementamos el valor de piedras creadas
+            GameManager.stonesThrown++;
 
             //Paamos la corrutina y le decimos a Unity cada cuanto tiempo la debe volver a llamar.
             yield return new WaitForSeconds(UnityEngine.Random.Range(minTimeBetweenStones, maxTimeBetweenStones));
