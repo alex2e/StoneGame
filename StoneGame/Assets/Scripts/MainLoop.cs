@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainLoop : MonoBehaviour {
     /// <summary>
@@ -36,6 +37,8 @@ public class MainLoop : MonoBehaviour {
 
     private bool enableStones = true;
     private Rigidbody rigibody;
+
+    public int amoutStone = 20;
 
 
     // Use this for initialization
@@ -73,9 +76,19 @@ public class MainLoop : MonoBehaviour {
             //Incrementamos el valor de piedras creadas
             GameManager.stonesThrown++;
 
-            //Paamos la corrutina y le decimos a Unity cada cuanto tiempo la debe volver a llamar.
-            yield return new WaitForSeconds(UnityEngine.Random.Range(minTimeBetweenStones, maxTimeBetweenStones));
-        } 
+            if (GameManager.stonesThrown == amoutStone)
+            {
+                enableStones = false;
+                yield return new WaitForSeconds(6.0f);
+            }
+            else
+            {
+                //Paamos la corrutina y le decimos a Unity cada cuanto tiempo la debe volver a llamar.
+                yield return new WaitForSeconds(UnityEngine.Random.Range(minTimeBetweenStones, maxTimeBetweenStones));
+            }
+           
+        }
+        SceneManager.LoadScene("Final");
     }
 
     // Update is called once per frame
